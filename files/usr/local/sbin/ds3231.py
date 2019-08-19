@@ -541,3 +541,47 @@ class ds3231(object):
         addr0 = address % 256
         self._bus.write_i2c_block_data(self._at24c32_addr, addr1, [addr0, value])
         time.sleep(0.20)
+
+
+    def set_square_wave_frequency(self,freq_id):
+        """
+        id | Square-Wave-output-frequency
+        ---------------------------------
+        0  | 1 Hz
+        1  | 1.024 kHz
+        2  | 4.096 kHz
+        3  | 8.192 kHz
+
+        :param freq_id: id of frequency
+        :return: None
+        """
+        # Check input
+        if freq_id > 3 or freq_id < 0:
+            raise ValueError('freq_id has to be is out of range [0,4]')
+
+        # Define RS1
+        rs1 = freq_id % 2
+        # Define RS2
+        rs2 = freq_id > 1
+        # Define control
+        control = self._read(self._CONTROL_REGISTER)
+        control = _set_bit(control, 3, rs1)
+        control = _set_bit(control, 4, rs2)
+        # Reset control
+        self._write(self._CONTROL_REGISTER, control)
+
+    def set_alarm_type(self, alarm_type):
+        """
+
+        :param alarm_type:
+        :return:
+        """
+        if alarm_type not in range(2):
+            raise ValueError('alarm hat to be in range [0,1]')
+        control = self._read(self._CONTROL_REGISTER)
+        control = _set_bit(control, 2, alarm_type)
+        # Reset control
+        self._write(self._CONTROL_REGISTER, control)
+
+
+
