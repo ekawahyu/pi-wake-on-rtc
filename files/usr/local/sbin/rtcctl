@@ -254,7 +254,7 @@ if __name__ == "__main__":
     if command == 'help':
       help()
     elif command in dir:
-      rtc = ds3231.ds3231(1,utc)               # use i2c-1
+      rtc = ds3231.ds3231(3,utc)               # use i2c-1
       exec command+"(rtc,sys.argv[2:])"
     else:
       print "command %s not found!" % command

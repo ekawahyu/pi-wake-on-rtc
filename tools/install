@@ -66,13 +66,17 @@ install_files() {
 # --- configure system   ----------------------------------------------------
 
 configure_system() {
-  if ! grep -q "^dtparam=i2c_arm=on" /boot/config.txt; then
+  if ! grep -q "^dtoverlay=i2c-gpio,i2c_gpio_sda=20,i2c_gpio_scl=21,i2c_gpio_delay_us=5" /boot/config.txt; then
     echo -e "[INFO] configuring /boot/config.txt" 2>&1
-    echo "dtparam=i2c_arm=on" >> /boot/config.txt
+    echo "dtoverlay=i2c-gpio,i2c_gpio_sda=20,i2c_gpio_scl=21,i2c_gpio_delay_us=5" >> /boot/config.txt
   fi
-  if ! grep -q "^dtoverlay=gpio-poweroff,gpiopin=4" /boot/config.txt; then
+  if ! grep -q "^gpio=20,21=pu" /boot/config.txt; then
     echo -e "[INFO] configuring /boot/config.txt" 2>&1
-    echo "dtoverlay=gpio-poweroff,gpiopin=4" >> /boot/config.txt
+    echo "gpio=20,21=pu" >> /boot/config.txt
+  fi
+  if ! grep -q "^dtoverlay=gpio-shutdown,gpio_pin=26" /boot/config.txt; then
+    echo -e "[INFO] configuring /boot/config.txt" 2>&1
+    echo "dtoverlay=gpio-shutdown,gpio_pin=26" >> /boot/config.txt
   fi
 
   if ! grep -q "^i2c-dev" /etc/modules; then

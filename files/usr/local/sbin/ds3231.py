@@ -59,7 +59,7 @@ import arrow                                  # local/utc conversions
 DS3231ADDR = 0x68 #known versions of DS3231 use 0x68
 AT24C32ADDR = 0x57  #older boards use 0x56
 
-I2C_PORT = 1 #valid ports are 0 and 1
+I2C_PORT = 3 #valid ports are 0 and 1
 
 def _bcd_to_int(bcd):
     """
